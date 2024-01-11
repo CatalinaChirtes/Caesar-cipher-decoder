@@ -3,23 +3,30 @@ import requests
 
 
 class DownloadThread(threading.Thread):
-    def __init__(self, url, filename):
+    def __init__(self, url: str, filename: str):
         super().__init__()
+
+        # URL from which to download the file
         self.url = url
+
+        # Filename to save the downloaded content
         self.filename = filename
 
-    def download_file(self):
+    # Downloading content from the specified URL
+    def download_file(self) -> bytes:
         response = requests.get(self.url)
         if response.status_code == 200:
             return response.content
         return None
 
-    def save_content(self, content):
+    # Saving the downloaded content to a file
+    def save_content(self, content: bytes) -> None:
         if content:
             with open(self.filename, 'wb') as file:
                 file.write(content)
 
-    def run(self):
+    # Downloading and saving the content
+    def run(self) -> None:
         try:
             content = self.download_file()
             self.save_content(content)

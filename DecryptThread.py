@@ -1,7 +1,8 @@
 import threading
 
 
-def caesar_decrypt(text, offset):
+# Function to decrypt text using the Caesar cipher
+def caesar_decrypt(text: str, offset: int) -> str:
     decrypted = ''
     for char in text:
         if char.isalpha():
@@ -16,19 +17,27 @@ def caesar_decrypt(text, offset):
 
 
 class DecryptThread(threading.Thread):
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         super().__init__()
+
+        # Filename of the encrypted file
         self.filename = filename
+
+        # List to store decrypted content
         self.decrypted_content = []
 
-    def read_file(self):
+    # Function for reading the content of the encrypted file
+    def read_file(self) -> str:
         with open(self.filename, 'r') as file:
             return file.read()
 
-    def run(self):
+    def run(self) -> None:
         try:
+            # Decrypting the content using the Caesar cipher
             content = self.read_file()
             decrypted_content = caesar_decrypt(content, 8)
+
+            # Splitting the decrypted content into lines
             self.decrypted_content = decrypted_content.splitlines()
         except Exception as e:
             print(f"Error decrypting {self.filename}: {e}")
